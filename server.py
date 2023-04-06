@@ -23,8 +23,7 @@ def template(contents, content):  # 똑같은 본문을 작성하기 위해 생�
     <ol>
        {contents}
     </ol>
-    {content}
-</body>
+    {content} <a href ="/create/">Create</a></body>
 </html>"""
 
 
@@ -44,9 +43,6 @@ def index():
 
 
 # 라우팅 : 플라스크에서는 함수를 통해서 라우팅함 -> 라우터 -> 라우팅을 해주는 기술 플라스크에서는 @app.route("/") 함수를 사용
-@app.route("/create/")
-def crate():
-    return "create"
 
 
 @app.route("/read/<int:id>/")  # 플라스크가 정수로 컨버팅
@@ -60,6 +56,19 @@ def read(id):  # 라우트의 <값>을주면 받는 함수의 파라매터가 �
             body = topic["body"]
             break
     return template(get_contents(), f"<h2>{title}</h2>{body}")
+
+
+@app.route("/create/")
+def create():
+    content = """
+    <form action ="/create/" method="POST">  
+        <p><input type ="text" name = "title" placeholder="title"></p>
+        <p><textarea name = "title" placeholder="body"></textarea></p>
+        <p><input type ='submit' value="create"></p>
+    </form>    
+    """  # url을 통해서 데이터를 전송하는 방식 gap방식이라 함 (서버쪽으로 데이터를 전송할때 url안에 포함됨)
+    # 페이지를 변경할떈 POST방식을 사용해줘야함
+    return template(get_contents(), content)  # 플라스크가 정수로 컨버팅
 
 
 app.run(port=5001, debug=True)
